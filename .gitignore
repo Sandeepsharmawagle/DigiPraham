@@ -1,0 +1,9 @@
+# Cloudflare tunnel files
+tunnel_log.txt
+cf_tunnel.txt
+cf_tunnel2.txt
+*.txt
+
+# OS files
+.DS_Store
+Thumbs.db
