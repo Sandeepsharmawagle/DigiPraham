@@ -33,6 +33,8 @@ export const getMyApplications = () => api.get('/api/internships/my/applications
 export const createOrder = (data) => api.post('/api/payments/create-order', data);
 export const verifyPayment = (data) => api.post('/api/payments/verify', data);
 export const getMyPayments = () => api.get('/api/payments/my');
+export const getOfferLetterData = (applicationId) => api.get(`/api/payments/offer-letter/${applicationId}`);
+
 
 // Chat
 export const getChatHistory = () => api.get('/api/chat/history');

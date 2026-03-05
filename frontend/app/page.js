@@ -1,13 +1,42 @@
 'use client';
+import Image from 'next/image';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Link from 'next/link';
 
 const services = [
-  { icon: '🤖', title: 'AI & Machine Learning', desc: 'End-to-end ML pipelines, NLP, Computer Vision, and intelligent automation.', slug: 'ai-ml', color: '#7C6FFF' },
-  { icon: '📊', title: 'Data Analytics', desc: 'Transform raw data into business insights with dashboards, ETL, and BI.', slug: 'data-analytics', color: '#FF6B9D' },
-  { icon: '🌐', title: 'Web Development', desc: 'Full-stack web apps from landing pages to enterprise SaaS, beautifully crafted.', slug: 'web-development', color: '#43E97B' },
-  { icon: '📱', title: 'App Development', desc: 'Cross-platform and native mobile apps for iOS and Android.', slug: 'app-development', color: '#FFB347' },
+  {
+    icon: '🤖',
+    title: 'AI & Machine Learning',
+    desc: 'End-to-end ML pipelines, NLP, Computer Vision, and intelligent automation.',
+    slug: 'ai-ml',
+    color: '#7C6FFF',
+    img: 'https://images.unsplash.com/photo-1677756119517-756a188d2d94?w=600&q=80',
+  },
+  {
+    icon: '📊',
+    title: 'Data Analytics',
+    desc: 'Transform raw data into business insights with dashboards, ETL, and BI.',
+    slug: 'data-analytics',
+    color: '#FF6B9D',
+    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',
+  },
+  {
+    icon: '🌐',
+    title: 'Web Development',
+    desc: 'Full-stack web apps from landing pages to enterprise SaaS, beautifully crafted.',
+    slug: 'web-development',
+    color: '#43E97B',
+    img: 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&q=80',
+  },
+  {
+    icon: '📱',
+    title: 'App Development',
+    desc: 'Cross-platform and native mobile apps for iOS and Android.',
+    slug: 'app-development',
+    color: '#FFB347',
+    img: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80',
+  },
 ];
 
 const stats = [
@@ -18,9 +47,27 @@ const stats = [
 ];
 
 const testimonials = [
-  { name: 'Rahul Sharma', role: 'CTO, TechStartup', text: 'DigiPratham built our ML pipeline from scratch. Their expertise in AI is unmatched.', avatar: 'R', color: '#7C6FFF' },
-  { name: 'Priya Patel', role: 'Founder, DataCo', text: 'The analytics dashboard they delivered transformed how we make business decisions.', avatar: 'P', color: '#FF6B9D' },
-  { name: 'Amit Verma', role: 'PM, EcomBrand', text: 'Outstanding web development. Delivered on time, within budget, and beyond our expectations.', avatar: 'A', color: '#43E97B' },
+  {
+    name: 'Rahul Sharma',
+    role: 'CTO, TechStartup',
+    text: 'DigiPratham built our ML pipeline from scratch. Their expertise in AI is unmatched.',
+    color: '#7C6FFF',
+    img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80',
+  },
+  {
+    name: 'Priya Patel',
+    role: 'Founder, DataCo',
+    text: 'The analytics dashboard they delivered transformed how we make business decisions.',
+    color: '#FF6B9D',
+    img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80',
+  },
+  {
+    name: 'Amit Verma',
+    role: 'PM, EcomBrand',
+    text: 'Outstanding web development. Delivered on time, within budget, and beyond our expectations.',
+    color: '#43E97B',
+    img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80',
+  },
 ];
 
 const techLogos = ['Python', 'TensorFlow', 'React', 'Node.js', 'Flutter', 'MongoDB', 'PyTorch', 'Next.js', 'Docker', 'AWS'];
@@ -36,31 +83,56 @@ export default function HomePage() {
           <div className="glow-dot" style={{ width: 400, height: 400, background: '#7C6FFF', top: '10%', right: '5%', opacity: 0.12 }} />
           <div className="glow-dot" style={{ width: 300, height: 300, background: '#FF6B9D', bottom: '15%', left: '8%', opacity: 0.1 }} />
 
-          <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
-            <div className="badge animate-fade-up" style={{ marginBottom: '2rem' }}>🚀 AI-First Digital Solutions</div>
-
-            <h1 className="display-1 animate-fade-up delay-100" style={{ marginBottom: '1.5rem', color: 'var(--text-main)' }}>
-              Build Smarter<br />
-              with <span className="gradient-text">DigiPratham</span>
-            </h1>
-
-            <p className="animate-fade-up delay-200" style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)', color: 'var(--text-muted)', maxWidth: 620, margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
-              We deliver AI & ML, Data Analytics, Web Development, and App Development services that drive real, measurable business results.
-            </p>
-
-            <div className="animate-fade-up delay-300" style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '5rem' }}>
-              <Link href="/services" className="btn-primary" style={{ fontSize: '1rem', padding: '0.95rem 2.25rem' }}>Explore Services →</Link>
-              <Link href="/careers" className="btn-ghost" style={{ fontSize: '1rem', padding: '0.95rem 2.25rem' }}>Join Internship</Link>
-            </div>
-
-            {/* Stats Row */}
-            <div className="animate-fade-up delay-400" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '2rem', maxWidth: 700, margin: '0 auto', borderTop: '1px solid var(--border-card)', paddingTop: '3rem' }}>
-              {stats.map(s => (
-                <div key={s.label} style={{ textAlign: 'center' }}>
-                  <div className="stat-number">{s.value}</div>
-                  <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.4rem', fontWeight: 500 }}>{s.label}</div>
+          <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
+              {/* Left: Text */}
+              <div>
+                <div className="badge animate-fade-up" style={{ marginBottom: '2rem' }}>🚀 AI-First Digital Solutions</div>
+                <h1 className="display-1 animate-fade-up delay-100" style={{ marginBottom: '1.5rem', color: 'var(--text-main)' }}>
+                  Build Smarter<br />
+                  with <span className="gradient-text">DigiPratham</span>
+                </h1>
+                <p className="animate-fade-up delay-200" style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)', color: 'var(--text-muted)', maxWidth: 520, lineHeight: 1.7, marginBottom: '2.5rem' }}>
+                  We deliver AI & ML, Data Analytics, Web Development, and App Development services that drive real, measurable business results.
+                </p>
+                <div className="animate-fade-up delay-300" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '4rem' }}>
+                  <Link href="/services" className="btn-primary" style={{ fontSize: '1rem', padding: '0.95rem 2.25rem' }}>Explore Services →</Link>
+                  <Link href="/careers" className="btn-ghost" style={{ fontSize: '1rem', padding: '0.95rem 2.25rem' }}>Join Internship</Link>
                 </div>
-              ))}
+
+                {/* Stats Row */}
+                <div className="animate-fade-up delay-400" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '1.5rem', borderTop: '1px solid var(--border-card)', paddingTop: '2.5rem' }}>
+                  {stats.map(s => (
+                    <div key={s.label} style={{ textAlign: 'center' }}>
+                      <div className="stat-number">{s.value}</div>
+                      <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.4rem', fontWeight: 500 }}>{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right: Hero Image */}
+              <div className="animate-fade-up delay-200" style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+                <div style={{ position: 'relative', width: '100%', maxWidth: 520, aspectRatio: '4/3', borderRadius: 24, overflow: 'hidden', boxShadow: '0 32px 80px rgba(124,111,255,0.25)' }}>
+                  <Image
+                    src="https://images.unsplash.com/photo-1555421689-d68471e189f2?w=1000&q=85"
+                    alt="Team collaborating on AI and technology solutions"
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    priority
+                  />
+                  {/* Gradient overlay */}
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(124,111,255,0.3) 0%, rgba(255,107,157,0.15) 100%)' }} />
+                </div>
+                {/* Floating badge */}
+                <div style={{ position: 'absolute', bottom: -18, left: 24, background: 'var(--bg-card)', border: '1px solid var(--border-card)', borderRadius: 16, padding: '0.85rem 1.35rem', display: 'flex', alignItems: 'center', gap: '0.75rem', backdropFilter: 'blur(12px)', boxShadow: '0 8px 32px rgba(0,0,0,0.18)' }}>
+                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg,#7C6FFF,#FF6B9D)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>✨</div>
+                  <div>
+                    <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.85rem' }}>AI-Powered Solutions</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>Trusted by 30+ clients</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -89,15 +161,26 @@ export default function HomePage() {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))', gap: '1.5rem' }}>
-              {services.map((svc, i) => (
+              {services.map((svc) => (
                 <Link key={svc.slug} href={`/services/${svc.slug}`} style={{ textDecoration: 'none' }}>
-                  <div className="glass-card" style={{ padding: '2.25rem', height: '100%', position: 'relative', overflow: 'hidden' }}>
-                    {/* Subtle accent corner */}
-                    <div style={{ position: 'absolute', top: 0, right: 0, width: 80, height: 80, background: `${svc.color}10`, borderBottomLeftRadius: 60, pointerEvents: 'none' }} />
-                    <div style={{ width: 58, height: 58, borderRadius: 16, background: `${svc.color}15`, border: `1.5px solid ${svc.color}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.75rem', marginBottom: '1.5rem' }}>{svc.icon}</div>
-                    <h3 style={{ fontWeight: 700, marginBottom: '0.75rem', fontSize: '1.15rem', color: 'var(--text-main)', letterSpacing: '-0.02em' }}>{svc.title}</h3>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.75, marginBottom: '1.5rem' }}>{svc.desc}</p>
-                    <div style={{ color: svc.color, fontSize: '0.875rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.3rem', fontFamily: 'Space Grotesk' }}>Learn more →</div>
+                  <div className="glass-card" style={{ overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    {/* Service Image */}
+                    <div style={{ position: 'relative', width: '100%', height: 180, flexShrink: 0 }}>
+                      <Image
+                        src={svc.img}
+                        alt={svc.title}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                      />
+                      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(to bottom, ${svc.color}22, rgba(0,0,0,0.55))` }} />
+                      <div style={{ position: 'absolute', top: 16, left: 16, width: 48, height: 48, borderRadius: 12, background: `${svc.color}25`, border: `1.5px solid ${svc.color}60`, backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>{svc.icon}</div>
+                    </div>
+                    {/* Content */}
+                    <div style={{ padding: '1.75rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                      <h3 style={{ fontWeight: 700, marginBottom: '0.65rem', fontSize: '1.1rem', color: 'var(--text-main)', letterSpacing: '-0.02em' }}>{svc.title}</h3>
+                      <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', lineHeight: 1.75, marginBottom: '1.25rem', flex: 1 }}>{svc.desc}</p>
+                      <div style={{ color: svc.color, fontSize: '0.85rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.3rem', fontFamily: 'Space Grotesk' }}>Learn more →</div>
+                    </div>
                   </div>
                 </Link>
               ))}
@@ -108,29 +191,41 @@ export default function HomePage() {
         {/* ══ DARK SECTION — Why DigiPratham ═══════════════════════ */}
         <section className="dark-section" style={{ padding: '8rem 0 7rem', marginTop: '2rem' }}>
           <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-            <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-              <div className="badge" style={{ marginBottom: '1.25rem', background: 'rgba(124,111,255,0.15)', borderColor: 'rgba(124,111,255,0.4)' }}>Why Choose Us</div>
-              <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, letterSpacing: '-0.04em', color: '#fff', marginBottom: '1rem' }}>
-                Built for <span className="gradient-text">Results</span>
-              </h2>
-              <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.1rem', maxWidth: 500, margin: '0 auto' }}>
-                We combine deep expertise with agile delivery to create real impact for your business.
-              </p>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
-              {[
-                { icon: '⚡', title: 'Fast Delivery', desc: 'Agile sprints with rapid iterations and constant communication.', grad: '#7C6FFF' },
-                { icon: '🔒', title: 'Secure & Scalable', desc: 'Enterprise-grade security and architecture built to grow with you.', grad: '#FF6B9D' },
-                { icon: '🎯', title: 'Goal-Oriented', desc: 'Every decision is tied to measurable business outcomes.', grad: '#43E97B' },
-                { icon: '🤝', title: '24/7 Support', desc: 'Dedicated support from kickoff through post-launch.', grad: '#FFB347' },
-              ].map(w => (
-                <div key={w.title} className="dark-card" style={{ padding: '2.25rem' }}>
-                  <div style={{ width: 52, height: 52, borderRadius: 14, background: `${w.grad}15`, border: `1.5px solid ${w.grad}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', marginBottom: '1.25rem' }}>{w.icon}</div>
-                  <h4 style={{ fontWeight: 700, color: '#111', marginBottom: '0.6rem', fontSize: '1.05rem' }}>{w.title}</h4>
-                  <p style={{ color: '#555', fontSize: '0.9rem', lineHeight: 1.7 }}>{w.desc}</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center', marginBottom: '4rem' }}>
+              {/* Image column */}
+              <div style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', aspectRatio: '16/10', boxShadow: '0 20px 60px rgba(0,0,0,0.4)' }}>
+                <Image
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=80"
+                  alt="Agile team working together in a modern tech office"
+                  fill
+                  style={{ objectFit: 'cover' }}
+                />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(124,111,255,0.35) 0%, rgba(0,0,0,0.2) 100%)' }} />
+              </div>
+              {/* Text column */}
+              <div>
+                <div className="badge" style={{ marginBottom: '1.25rem', background: 'rgba(124,111,255,0.15)', borderColor: 'rgba(124,111,255,0.4)' }}>Why Choose Us</div>
+                <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontWeight: 800, letterSpacing: '-0.04em', color: '#fff', marginBottom: '1.25rem' }}>
+                  Built for <span className="gradient-text">Results</span>
+                </h2>
+                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.05rem', marginBottom: '2.5rem', lineHeight: 1.7 }}>
+                  We combine deep expertise with agile delivery to create real impact for your business.
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+                  {[
+                    { icon: '⚡', title: 'Fast Delivery', desc: 'Agile sprints with rapid iterations.', grad: '#7C6FFF' },
+                    { icon: '🔒', title: 'Secure & Scalable', desc: 'Enterprise-grade architecture.', grad: '#FF6B9D' },
+                    { icon: '🎯', title: 'Goal-Oriented', desc: 'Tied to measurable outcomes.', grad: '#43E97B' },
+                    { icon: '🤝', title: '24/7 Support', desc: 'Dedicated post-launch support.', grad: '#FFB347' },
+                  ].map(w => (
+                    <div key={w.title} className="dark-card" style={{ padding: '1.5rem' }}>
+                      <div style={{ width: 44, height: 44, borderRadius: 12, background: `${w.grad}15`, border: `1.5px solid ${w.grad}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem', marginBottom: '0.85rem' }}>{w.icon}</div>
+                      <h4 style={{ fontWeight: 700, color: '#111', marginBottom: '0.4rem', fontSize: '0.9rem' }}>{w.title}</h4>
+                      <p style={{ color: '#555', fontSize: '0.8rem', lineHeight: 1.6 }}>{w.desc}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </section>
@@ -146,6 +241,22 @@ export default function HomePage() {
                 <p style={{ color: 'var(--text-muted)', lineHeight: 1.8, marginBottom: '2.25rem', fontSize: '1.025rem' }}>
                   Join our structured paid internship programs. Work on live projects, get certified, and build the portfolio that gets you hired.
                 </p>
+
+                {/* Internship Photo Grid */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '2rem', borderRadius: 16, overflow: 'hidden' }}>
+                  {[
+                    'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&q=80',
+                    'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&q=80',
+                    'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&q=80',
+                    'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=400&q=80',
+                  ].map((url, i) => (
+                    <div key={i} style={{ position: 'relative', height: 120, borderRadius: 12, overflow: 'hidden' }}>
+                      <Image src={url} alt="Internship program" fill style={{ objectFit: 'cover' }} />
+                      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,rgba(124,111,255,0.2),rgba(0,0,0,0.15))' }} />
+                    </div>
+                  ))}
+                </div>
+
                 <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                   <Link href="/careers" className="btn-primary">View Programs</Link>
                   <Link href="/register" className="btn-outline">Register Free</Link>
@@ -195,7 +306,14 @@ export default function HomePage() {
                   </div>
                   <p style={{ color: 'var(--text-muted)', lineHeight: 1.8, marginBottom: '1.75rem', fontStyle: 'italic', fontSize: '0.95rem' }}>"{t.text}"</p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.875rem' }}>
-                    <div style={{ width: 44, height: 44, borderRadius: '50%', background: `linear-gradient(135deg, ${t.color}, ${t.color}88)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: '#fff', fontSize: '1rem', flexShrink: 0 }}>{t.avatar}</div>
+                    <div style={{ width: 48, height: 48, borderRadius: '50%', overflow: 'hidden', flexShrink: 0, border: `2px solid ${t.color}50`, position: 'relative' }}>
+                      <Image
+                        src={t.img}
+                        alt={t.name}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
                     <div>
                       <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.9rem' }}>{t.name}</div>
                       <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{t.role}</div>
@@ -208,17 +326,27 @@ export default function HomePage() {
         </section>
 
         {/* ══ FINAL CTA (Dark) ══════════════════════════════════════ */}
-        <section className="dark-section" style={{ padding: '8rem 0', textAlign: 'center' }}>
+        <section style={{ position: 'relative', padding: '8rem 0', textAlign: 'center', overflow: 'hidden' }}>
+          {/* Background image */}
+          <div style={{ position: 'absolute', inset: 0 }}>
+            <Image
+              src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1600&q=80"
+              alt="Modern tech workspace"
+              fill
+              style={{ objectFit: 'cover', opacity: 0.15 }}
+            />
+          </div>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, var(--bg-main) 0%, rgba(15,12,30,0.96) 40%, var(--bg-main) 100%)' }} />
           <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-            <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 0.95, color: '#fff', marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 0.95, color: 'var(--text-main)', marginBottom: '1.5rem' }}>
               Ready to <span className="gradient-text">Transform</span><br />Your Business?
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.15rem', marginBottom: '3rem', maxWidth: 500, margin: '0 auto 3rem' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1.15rem', marginBottom: '3rem', maxWidth: 500, margin: '0 auto 3rem' }}>
               Start your journey with DigiPratham today. Register free and get access to all services.
             </p>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <Link href="/register" className="btn-primary" style={{ fontSize: '1.05rem', padding: '1rem 2.5rem' }}>Get Started Free</Link>
-              <Link href="/contact" className="btn-ghost" style={{ fontSize: '1.05rem', padding: '1rem 2.5rem', borderColor: 'rgba(255,255,255,0.2)', color: '#fff' }}>Talk to Us</Link>
+              <Link href="/contact" className="btn-ghost" style={{ fontSize: '1.05rem', padding: '1rem 2.5rem' }}>Talk to Us</Link>
             </div>
           </div>
         </section>

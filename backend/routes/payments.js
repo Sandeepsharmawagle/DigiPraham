@@ -96,4 +96,40 @@ router.get('/my', protect, async (req, res) => {
     res.json(payments);
 });
 
+// GET /api/payments/offer-letter/:applicationId
+router.get('/offer-letter/:applicationId', protect, async (req, res) => {
+    const application = await Application.findById(req.params.applicationId)
+        .populate('internshipId', 'title duration price')
+        .populate('paymentId', 'amount paymentId createdAt status');
+
+    if (!application) return res.status(404).json({ error: 'Application not found' });
+    if (application.userId.toString() !== req.user._id.toString())
+        return res.status(403).json({ error: 'Not authorised to view this offer letter' });
+    if (application.paymentId?.status !== 'paid')
+        return res.status(400).json({ error: 'Payment not confirmed for this application' });
+
+    // Stamp first-issued date
+    if (!application.offerLetterIssuedAt) {
+        application.offerLetterIssuedAt = new Date();
+        await application.save();
+    }
+
+    const internship = application.internshipId;
+    const payment = application.paymentId;
+
+    res.json({
+        studentName: req.user.name,
+        studentEmail: req.user.email,
+        internshipTitle: internship?.title || 'Internship Program',
+        duration: internship?.duration || '1 Month',
+        amount: payment?.amount || internship?.price,
+        paymentId: payment?.paymentId || 'N/A',
+        issuedAt: application.offerLetterIssuedAt,
+        applicationId: application._id,
+        certification: internship?.duration?.includes('2')
+            ? 'DigiPratham Certificate of Excellence'
+            : 'DigiPratham Certificate of Completion',
+    });
+});
+
 module.exports = router;

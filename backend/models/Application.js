@@ -6,6 +6,7 @@ const applicationSchema = new mongoose.Schema(
         internshipId: { type: mongoose.Schema.Types.ObjectId, ref: 'Internship', required: true },
         paymentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Payment', required: true },
         status: { type: String, enum: ['pending', 'active', 'completed', 'cancelled'], default: 'active' },
+        offerLetterIssuedAt: { type: Date, default: null },
     },
     { timestamps: true }
 );

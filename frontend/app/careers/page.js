@@ -37,7 +37,7 @@ export default function CareersPage() {
                     handler: async (response) => {
                         const { verifyPayment } = await import('../lib/api');
                         await verifyPayment({ ...response, internshipId: intern.id });
-                        alert('🎉 Payment successful! Application submitted.');
+                        sessionStorage.setItem('dp_payment_success', `Your application for "${intern.title}" has been confirmed!`);
                         window.location.href = '/dashboard';
                     },
                     theme: { color: '#6C63FF' },
