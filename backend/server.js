@@ -21,10 +21,37 @@ const dashboardRoutes = require('./routes/dashboard');
 const app = express();
 const server = http.createServer(app);
 
+// ── CORS Whitelist ────────────────────────────────────────────────────────────
+const ALLOWED_ORIGINS = [
+    process.env.FRONTEND_URL,          // e.g. https://digipratham.netlify.app
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://127.0.0.1:3000',
+].filter(Boolean);
+
+const corsOptions = {
+    origin: (origin, callback) => {
+        // Allow requests with no origin (e.g. Postman, curl, server-side) and whitelisted origins
+        if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+            callback(null, true);
+        } else {
+            console.warn(`[CORS] Blocked origin: ${origin}`);
+            callback(new Error(`CORS: origin ${origin} not allowed`));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+// Apply CORS first — must be before all routes
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));  // handle preflight for all routes
+
 // ── Socket.IO ────────────────────────────────────────────────────────────────
 const io = new Server(server, {
     cors: {
-        origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+        origin: ALLOWED_ORIGINS,
         methods: ['GET', 'POST'],
         credentials: true,
     },
@@ -32,26 +59,14 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
     console.log(`[WS] Client connected: ${socket.id}`);
-
     socket.on('join_room', (room) => socket.join(room));
-
-    socket.on('send_message', (data) => {
-        io.to(data.room).emit('receive_message', data);
-    });
-
-    socket.on('disconnect', () => {
-        console.log(`[WS] Client disconnected: ${socket.id}`);
-    });
+    socket.on('send_message', (data) => { io.to(data.room).emit('receive_message', data); });
+    socket.on('disconnect', () => { console.log(`[WS] Client disconnected: ${socket.id}`); });
 });
 
 // Attach io to req so controllers can emit
 app.use((req, _res, next) => { req.io = io; next(); });
-
-// ── Middleware ────────────────────────────────────────────────────────────────
-app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    credentials: true,
-}));
+// ── Body Parsers ─────────────────────────────────────────────────────────────
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

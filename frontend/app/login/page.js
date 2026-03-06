@@ -55,7 +55,7 @@ export default function LoginPage() {
                         </div>
 
                         <div style={{ textAlign: 'right', marginBottom: '1.75rem' }}>
-                            <span style={{ color: 'var(--primary)', fontSize: '0.85rem', cursor: 'pointer', fontWeight: 500 }}>Forgot password?</span>
+                            <Link href="/forgot-password" style={{ color: 'var(--primary)', fontSize: '0.85rem', fontWeight: 500, textDecoration: 'none' }}>Forgot password?</Link>
                         </div>
 
                         <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '0.875rem', fontSize: '1rem' }} disabled={loading}>

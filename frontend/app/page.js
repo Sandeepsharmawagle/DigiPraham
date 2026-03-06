@@ -3,6 +3,8 @@ import Image from 'next/image';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Link from 'next/link';
+import HeroReveal from './components/HeroReveal';
+import ScrollReveal from './components/ScrollReveal';
 
 const services = [
   {
@@ -87,32 +89,43 @@ export default function HomePage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
               {/* Left: Text */}
               <div>
-                <div className="badge animate-fade-up" style={{ marginBottom: '2rem' }}>🚀 AI-First Digital Solutions</div>
-                <h1 className="display-1 animate-fade-up delay-100" style={{ marginBottom: '1.5rem', color: 'var(--text-main)' }}>
+                <HeroReveal delay={0.1} y={24} blur={8}>
+                  <div className="badge" style={{ marginBottom: '2rem' }}>🚀 AI-First Digital Solutions</div>
+                </HeroReveal>
+                <HeroReveal delay={0.25} y={40} blur={14} as="h1"
+                  className="display-1"
+                  style={{ marginBottom: '1.5rem', color: 'var(--text-main)' }}
+                >
                   Build Smarter<br />
                   with <span className="gradient-text">DigiPratham</span>
-                </h1>
-                <p className="animate-fade-up delay-200" style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)', color: 'var(--text-muted)', maxWidth: 520, lineHeight: 1.7, marginBottom: '2.5rem' }}>
-                  We deliver AI & ML, Data Analytics, Web Development, and App Development services that drive real, measurable business results.
-                </p>
-                <div className="animate-fade-up delay-300" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '4rem' }}>
-                  <Link href="/services" className="btn-primary" style={{ fontSize: '1rem', padding: '0.95rem 2.25rem' }}>Explore Services →</Link>
-                  <Link href="/careers" className="btn-ghost" style={{ fontSize: '1rem', padding: '0.95rem 2.25rem' }}>Join Internship</Link>
-                </div>
+                </HeroReveal>
+                <HeroReveal delay={0.45} y={30} blur={10}>
+                  <p style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)', color: 'var(--text-muted)', maxWidth: 520, lineHeight: 1.7, marginBottom: '2.5rem' }}>
+                    We deliver AI &amp; ML, Data Analytics, Web Development, and App Development services that drive real, measurable business results.
+                  </p>
+                </HeroReveal>
+                <HeroReveal delay={0.6} y={24} blur={8}>
+                  <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '4rem' }}>
+                    <Link href="/services" className="btn-primary" style={{ fontSize: '1rem', padding: '0.95rem 2.25rem' }}>Explore Services →</Link>
+                    <Link href="/careers" className="btn-ghost" style={{ fontSize: '1rem', padding: '0.95rem 2.25rem' }}>Join Internship</Link>
+                  </div>
+                </HeroReveal>
 
                 {/* Stats Row */}
-                <div className="animate-fade-up delay-400" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '1.5rem', borderTop: '1px solid var(--border-card)', paddingTop: '2.5rem' }}>
-                  {stats.map(s => (
-                    <div key={s.label} style={{ textAlign: 'center' }}>
-                      <div className="stat-number">{s.value}</div>
-                      <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.4rem', fontWeight: 500 }}>{s.label}</div>
-                    </div>
-                  ))}
-                </div>
+                <HeroReveal delay={0.75} y={20} blur={6}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '1.5rem', borderTop: '1px solid var(--border-card)', paddingTop: '2.5rem' }}>
+                    {stats.map(s => (
+                      <div key={s.label} style={{ textAlign: 'center' }}>
+                        <div className="stat-number">{s.value}</div>
+                        <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.4rem', fontWeight: 500 }}>{s.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                </HeroReveal>
               </div>
 
               {/* Right: Hero Image */}
-              <div className="animate-fade-up delay-200" style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+              <HeroReveal delay={0.4} y={50} blur={16} style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
                 <div style={{ position: 'relative', width: '100%', maxWidth: 520, aspectRatio: '4/3', borderRadius: 24, overflow: 'hidden', boxShadow: '0 32px 80px rgba(124,111,255,0.25)' }}>
                   <Image
                     src="https://images.unsplash.com/photo-1555421689-d68471e189f2?w=1000&q=85"
@@ -132,7 +145,7 @@ export default function HomePage() {
                     <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>Trusted by 30+ clients</div>
                   </div>
                 </div>
-              </div>
+              </HeroReveal>
             </div>
           </div>
         </section>
@@ -155,9 +168,23 @@ export default function HomePage() {
         <section className="section">
           <div className="container">
             <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-              <div className="badge" style={{ marginBottom: '1.25rem' }}>What We Do</div>
-              <h2 className="section-title" style={{ marginBottom: '1.1rem', color: 'var(--text-main)' }}>Our Core <span className="gradient-text">Services</span></h2>
-              <p style={{ color: 'var(--text-muted)', fontSize: '1.075rem', maxWidth: 520, margin: '0 auto' }}>Cutting-edge technology solutions, tailored for your growth</p>
+              <ScrollReveal as="div" style={{ marginBottom: '1.25rem' }}>
+                <div className="badge">What We Do</div>
+              </ScrollReveal>
+              <ScrollReveal
+                text="Our Core Services"
+                as="h2"
+                className="section-title"
+                style={{ marginBottom: '1.1rem', color: 'var(--text-main)' }}
+                baseOpacity={0.05}
+                enableBlur
+                baseBlur={6}
+                stagger={0.07}
+                duration={0.75}
+              />
+              <ScrollReveal as="p" style={{ color: 'var(--text-muted)', fontSize: '1.075rem', maxWidth: 520, margin: '0 auto' }}>
+                Cutting-edge technology solutions, tailored for your growth
+              </ScrollReveal>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))', gap: '1.5rem' }}>
@@ -204,13 +231,22 @@ export default function HomePage() {
               </div>
               {/* Text column */}
               <div>
-                <div className="badge" style={{ marginBottom: '1.25rem', background: 'rgba(124,111,255,0.15)', borderColor: 'rgba(124,111,255,0.4)' }}>Why Choose Us</div>
-                <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontWeight: 800, letterSpacing: '-0.04em', color: '#fff', marginBottom: '1.25rem' }}>
-                  Built for <span className="gradient-text">Results</span>
-                </h2>
-                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.05rem', marginBottom: '2.5rem', lineHeight: 1.7 }}>
+                <ScrollReveal as="div" style={{ marginBottom: '1.25rem' }}>
+                  <div className="badge" style={{ background: 'rgba(124,111,255,0.15)', borderColor: 'rgba(124,111,255,0.4)' }}>Why Choose Us</div>
+                </ScrollReveal>
+                <ScrollReveal
+                  text="Built for Results"
+                  as="h2"
+                  style={{ fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontWeight: 800, letterSpacing: '-0.04em', color: '#fff', marginBottom: '1.25rem' }}
+                  baseOpacity={0.05}
+                  enableBlur
+                  baseBlur={8}
+                  stagger={0.08}
+                  duration={0.8}
+                />
+                <ScrollReveal as="div" style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.05rem', marginBottom: '2.5rem', lineHeight: 1.7 }}>
                   We combine deep expertise with agile delivery to create real impact for your business.
-                </p>
+                </ScrollReveal>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
                   {[
                     { icon: '⚡', title: 'Fast Delivery', desc: 'Agile sprints with rapid iterations.', grad: '#7C6FFF' },
@@ -236,11 +272,21 @@ export default function HomePage() {
           <div className="container" style={{ position: 'relative', zIndex: 1 }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
               <div>
-                <div className="badge" style={{ marginBottom: '1.25rem' }}>🎓 Internship Programs</div>
-                <h2 className="section-title" style={{ marginBottom: '1.1rem', color: 'var(--text-main)' }}>Launch Your <span className="gradient-text">Tech Career</span></h2>
-                <p style={{ color: 'var(--text-muted)', lineHeight: 1.8, marginBottom: '2.25rem', fontSize: '1.025rem' }}>
+                <ScrollReveal as="div" style={{ marginBottom: '1.25rem' }}>
+                  <div className="badge">🎓 Internship Programs</div>
+                </ScrollReveal>
+                <ScrollReveal
+                  text="Launch Your Tech Career"
+                  as="h2"
+                  className="section-title"
+                  style={{ marginBottom: '1.1rem', color: 'var(--text-main)' }}
+                  baseOpacity={0.05}
+                  enableBlur
+                  stagger={0.07}
+                />
+                <ScrollReveal as="p" style={{ color: 'var(--text-muted)', lineHeight: 1.8, marginBottom: '2.25rem', fontSize: '1.025rem' }}>
                   Join our structured paid internship programs. Work on live projects, get certified, and build the portfolio that gets you hired.
-                </p>
+                </ScrollReveal>
 
                 {/* Internship Photo Grid */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '2rem', borderRadius: 16, overflow: 'hidden' }}>
@@ -295,8 +341,18 @@ export default function HomePage() {
         <section className="section" style={{ background: 'var(--bg-section)', borderTop: '1px solid var(--border-card)' }}>
           <div className="container">
             <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-              <div className="badge" style={{ marginBottom: '1.25rem' }}>Testimonials</div>
-              <h2 className="section-title" style={{ color: 'var(--text-main)' }}>What Our <span className="gradient-text">Clients Say</span></h2>
+              <ScrollReveal as="div" style={{ marginBottom: '1.25rem' }}>
+                <div className="badge">Testimonials</div>
+              </ScrollReveal>
+              <ScrollReveal
+                text="What Our Clients Say"
+                as="h2"
+                className="section-title"
+                style={{ color: 'var(--text-main)' }}
+                baseOpacity={0.05}
+                enableBlur
+                stagger={0.07}
+              />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1.5rem' }}>
               {testimonials.map(t => (
@@ -338,16 +394,23 @@ export default function HomePage() {
           </div>
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, var(--bg-main) 0%, rgba(15,12,30,0.96) 40%, var(--bg-main) 100%)' }} />
           <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-            <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 0.95, color: 'var(--text-main)', marginBottom: '1.5rem' }}>
-              Ready to <span className="gradient-text">Transform</span><br />Your Business?
-            </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1.15rem', marginBottom: '3rem', maxWidth: 500, margin: '0 auto 3rem' }}>
+            <ScrollReveal
+              text="Ready to Transform Your Business?"
+              as="h2"
+              style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.05, color: 'var(--text-main)', marginBottom: '1.5rem' }}
+              baseOpacity={0.05}
+              enableBlur
+              baseBlur={10}
+              stagger={0.06}
+              duration={0.85}
+            />
+            <ScrollReveal as="p" style={{ color: 'var(--text-muted)', fontSize: '1.15rem', marginBottom: '3rem', maxWidth: 500, margin: '0 auto 3rem' }} delay={0.2}>
               Start your journey with DigiPratham today. Register free and get access to all services.
-            </p>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            </ScrollReveal>
+            <ScrollReveal as="div" style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }} delay={0.4}>
               <Link href="/register" className="btn-primary" style={{ fontSize: '1.05rem', padding: '1rem 2.5rem' }}>Get Started Free</Link>
               <Link href="/contact" className="btn-ghost" style={{ fontSize: '1.05rem', padding: '1rem 2.5rem' }}>Talk to Us</Link>
-            </div>
+            </ScrollReveal>
           </div>
         </section>
       </main>

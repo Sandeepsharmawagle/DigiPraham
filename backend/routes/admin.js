@@ -9,7 +9,28 @@ const { protect, adminOnly } = require('../middleware/auth');
 
 const router = express.Router();
 
-// All admin routes require auth + admin role
+// ── Super Admin Login (public — no JWT required) ──────────────────────────────
+router.post('/super-login', async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password)
+        return res.status(400).json({ error: 'Email and password required' });
+    if (email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD)
+        return res.status(401).json({ error: 'Invalid super admin credentials' });
+
+    let user = await User.findOne({ email });
+    if (!user) {
+        user = await User.create({ name: 'Super Admin', email, password: require('bcryptjs').hashSync(password, 10), isAdmin: true, isVerified: true });
+    } else if (!user.isAdmin) {
+        user.isAdmin = true;
+        await user.save();
+    }
+
+    const jwt = require('jsonwebtoken');
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '12h' });
+    res.json({ token, user: { id: user._id, name: user.name, email: user.email, isAdmin: true } });
+});
+
+// All other admin routes require auth + admin role
 router.use(protect, adminOnly);
 
 // GET /api/admin/stats

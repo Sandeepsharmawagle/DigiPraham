@@ -14,6 +14,41 @@ const razorpay = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
+// POST /api/payments/mock-pay  ← instant success (demo mode, no Razorpay)
+router.post('/mock-pay', protect, async (req, res) => {
+    const { internshipId } = req.body;
+    const internship = await Internship.findById(internshipId);
+    if (!internship) return res.status(404).json({ error: 'Internship not found' });
+
+    // Create a paid payment record immediately
+    const payment = await Payment.create({
+        userId: req.user._id,
+        internshipId: internship._id,
+        amount: internship.price,
+        orderId: `mock_${req.user._id}_${Date.now()}`,
+        paymentId: `mock_pay_${Date.now()}`,
+        status: 'paid',
+    });
+
+    await User.findByIdAndUpdate(req.user._id, { $push: { paymentIds: payment._id } });
+
+    // Create application
+    const application = await Application.create({
+        userId: req.user._id,
+        internshipId: internship._id,
+        paymentId: payment._id,
+        status: 'active',
+    });
+
+    await User.findByIdAndUpdate(req.user._id, { $push: { applicationIds: application._id } });
+
+    res.json({
+        message: 'Payment successful! Application submitted.',
+        applicationId: application._id,
+        internshipTitle: internship.title,
+    });
+});
+
 // POST /api/payments/create-order
 router.post('/create-order', protect, async (req, res) => {
     const { internshipId } = req.body;

@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Link from 'next/link';
+import HeroReveal from '../components/HeroReveal';
+import ScrollReveal from '../components/ScrollReveal';
 
 const team = [
     {
@@ -46,13 +48,15 @@ export default function AboutPage() {
                         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, var(--bg-main) 0%, transparent 40%, var(--bg-main) 100%)' }} />
                     </div>
                     <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'center', paddingTop: 120, paddingBottom: '5rem' }}>
-                        <div className="badge" style={{ marginBottom: '1.25rem' }}>About Us</div>
-                        <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.75rem)', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text-main)' }}>
+                        <HeroReveal delay={0.1} y={20} blur={8} as="div">
+                            <div className="badge" style={{ marginBottom: '1.25rem' }}>About Us</div>
+                        </HeroReveal>
+                        <HeroReveal delay={0.3} y={40} blur={14} as="h1" style={{ fontSize: 'clamp(2.5rem, 5vw, 3.75rem)', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text-main)' }}>
                             Our <span className="gradient-text">Story</span>
-                        </h1>
-                        <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: 600, margin: '0 auto' }}>
+                        </HeroReveal>
+                        <HeroReveal delay={0.5} y={24} blur={10} as="p" style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: 600, margin: '0 auto' }}>
                             We are a team of passionate technologists on a mission to make AI and digital transformation accessible to every business.
-                        </p>
+                        </HeroReveal>
                     </div>
                 </section>
 
@@ -92,8 +96,8 @@ export default function AboutPage() {
 
                         {/* Why Choose Us */}
                         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                            <div className="badge" style={{ marginBottom: '1rem' }}>Why DigiPratham</div>
-                            <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', fontWeight: 700, marginBottom: '1rem', color: 'var(--text-main)' }}>What Sets Us <span className="gradient-text">Apart</span></h2>
+                            <ScrollReveal as="div" style={{ marginBottom: '1rem' }}><div className="badge">Why DigiPratham</div></ScrollReveal>
+                            <ScrollReveal text="What Sets Us Apart" as="h2" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', fontWeight: 700, marginBottom: '1rem', color: 'var(--text-main)' }} baseOpacity={0.05} enableBlur stagger={0.08} />
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem', marginBottom: '4rem' }}>
                             {[
@@ -112,8 +116,8 @@ export default function AboutPage() {
 
                         {/* Team */}
                         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                            <div className="badge" style={{ marginBottom: '1rem' }}>The Team</div>
-                            <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', fontWeight: 700, color: 'var(--text-main)' }}>Meet our <span className="gradient-text">Team</span></h2>
+                            <ScrollReveal as="div" style={{ marginBottom: '1rem' }}><div className="badge">The Team</div></ScrollReveal>
+                            <ScrollReveal text="Meet our Team" as="h2" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', fontWeight: 700, color: 'var(--text-main)' }} baseOpacity={0.05} enableBlur stagger={0.09} />
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem', marginBottom: '4rem' }}>
                             {team.map(t => (

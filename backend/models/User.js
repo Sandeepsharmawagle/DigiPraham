@@ -9,7 +9,15 @@ const userSchema = new mongoose.Schema(
         isAdmin: { type: Boolean, default: false },
         isVerified: { type: Boolean, default: false },
 
-        selectedServices: [{ type: String }],   // service slugs
+        // Email verification
+        emailVerifyToken: { type: String, select: false },
+        emailVerifyExpire: { type: Date, select: false },
+
+        // Password reset
+        resetPasswordToken: { type: String, select: false },
+        resetPasswordExpire: { type: Date, select: false },
+
+        selectedServices: [{ type: String }],
         applicationIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Application' }],
         paymentIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Payment' }],
     },

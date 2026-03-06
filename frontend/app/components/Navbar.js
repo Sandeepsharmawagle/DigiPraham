@@ -89,15 +89,16 @@ export default function Navbar() {
                         {isDark ? '☀️' : '🌙'}
                     </button>
 
+                    {/* Auth buttons — hidden on mobile */}
                     {user ? (
                         <>
-                            <Link href="/dashboard" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Dashboard</Link>
-                            <button onClick={logout} className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', background: 'linear-gradient(135deg,#FF6584,#ff8fa3)' }}>Logout</button>
+                            <Link href="/dashboard" className="btn-outline hide-mobile" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Dashboard</Link>
+                            <button onClick={logout} className="btn-primary hide-mobile" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', background: 'linear-gradient(135deg,#FF6584,#ff8fa3)' }}>Logout</button>
                         </>
                     ) : (
                         <>
-                            <Link href="/login" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Login</Link>
-                            <Link href="/register" className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Register</Link>
+                            <Link href="/login" className="btn-outline hide-mobile" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Login</Link>
+                            <Link href="/register" className="btn-primary hide-mobile" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Register</Link>
                         </>
                     )}
 
@@ -118,10 +119,21 @@ export default function Navbar() {
                             {link.label}
                         </Link>
                     ))}
-                    <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', paddingTop: '0.5rem', borderTop: '1px solid var(--border)' }}>
+                    <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', paddingTop: '0.5rem', borderTop: '1px solid var(--border)', flexWrap: 'wrap' }}>
                         <button onClick={toggleTheme} style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '0.5rem 1rem', cursor: 'pointer', color: 'var(--text-main)', fontWeight: 500, fontSize: '0.9rem' }}>
                             {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
                         </button>
+                        {user ? (
+                            <>
+                                <Link href="/dashboard" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }} onClick={() => setMenuOpen(false)}>Dashboard</Link>
+                                <button onClick={() => { setMenuOpen(false); logout(); }} className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', background: 'linear-gradient(135deg,#FF6584,#ff8fa3)' }}>Logout</button>
+                            </>
+                        ) : (
+                            <>
+                                <Link href="/login" className="btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }} onClick={() => setMenuOpen(false)}>Login</Link>
+                                <Link href="/register" className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }} onClick={() => setMenuOpen(false)}>Register</Link>
+                            </>
+                        )}
                     </div>
                 </div>
             )}
@@ -130,6 +142,7 @@ export default function Navbar() {
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
           .mobile-menu-btn { display: flex !important; }
+          .hide-mobile { display: none !important; }
         }
       `}</style>
         </nav>
