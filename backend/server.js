@@ -31,8 +31,14 @@ const ALLOWED_ORIGINS = [
 
 const corsOptions = {
     origin: (origin, callback) => {
-        // Allow requests with no origin (e.g. Postman, curl, server-side) and whitelisted origins
-        if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+        // Allow: no origin (Postman/curl/SSR), explicit whitelist,
+        // or any *.netlify.app / *.onrender.com subdomain
+        if (
+            !origin ||
+            ALLOWED_ORIGINS.includes(origin) ||
+            /\.netlify\.app$/.test(origin) ||
+            /\.onrender\.com$/.test(origin)
+        ) {
             callback(null, true);
         } else {
             console.warn(`[CORS] Blocked origin: ${origin}`);

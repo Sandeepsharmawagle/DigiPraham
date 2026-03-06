@@ -22,9 +22,9 @@ export default function Footer() {
                         <p style={{ color: '#9495B8', fontSize: '0.9rem', lineHeight: 1.7 }}>
                             Empowering businesses with intelligent digital solutions — AI, data, and beyond.
                         </p>
-                        <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem' }}>
+                        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1.25rem', flexWrap: 'wrap' }}>
                             {['LinkedIn', 'Twitter', 'Instagram', 'GitHub'].map(s => (
-                                <span key={s} style={{ background: 'rgba(108,99,255,0.1)', border: '1px solid rgba(108,99,255,0.25)', borderRadius: 8, padding: '0.4rem 0.75rem', fontSize: '0.75rem', color: '#9f8fff', cursor: 'pointer' }}>{s}</span>
+                                <span key={s} style={{ background: 'rgba(108,99,255,0.1)', border: '1px solid rgba(108,99,255,0.25)', borderRadius: 8, padding: '0.4rem 0.65rem', fontSize: '0.75rem', color: '#9f8fff', cursor: 'pointer', whiteSpace: 'nowrap' }}>{s}</span>
                             ))}
                         </div>
                     </div>
