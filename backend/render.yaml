@@ -42,3 +42,5 @@ services:
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
+      - key: TEST_USER_EMAIL
+        value: sandipsharm4321@gmail.com

@@ -21,9 +21,6 @@ export const sendVerifyEmail = () => api.post('/api/auth/send-verify-email');
 export const forgotPassword = (data) => api.post('/api/auth/forgot-password', data);
 export const resetPassword = (token, data) => api.post(`/api/auth/reset-password/${token}`, data);
 
-// Mock payment (demo mode — instant success)
-export const mockPay = (data) => api.post('/api/payments/mock-pay', data);
-
 // Services
 export const getServices = () => api.get('/api/services');
 export const getService = (slug) => api.get(`/api/services/${slug}`);

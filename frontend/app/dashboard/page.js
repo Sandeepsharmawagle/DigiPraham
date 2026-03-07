@@ -5,174 +5,212 @@ import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-// ── jsPDF Offer Letter Generator ─────────────────────────────────────────────
+// ── Premium Offer Letter PDF Generator ──────────────────────────────────────
 async function generateOfferLetterPDF(data) {
     const { jsPDF } = await import('jspdf');
     const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const W = 210;
+    const margin = 18;
 
-    const W = 210; // A4 width mm
-    const margin = 20;
+    // ── Background ────────────────────────────────────────────────────────────
+    doc.setFillColor(10, 9, 26);
+    doc.rect(0, 0, W, 297, 'F');
 
-    // ── Header Background ──────────────────────────────────────────────────────
-    doc.setFillColor(15, 12, 41);
-    doc.rect(0, 0, W, 60, 'F');
+    // ── Top gradient header block ─────────────────────────────────────────────
+    // Purple band
+    doc.setFillColor(62, 50, 168);
+    doc.rect(0, 0, W, 52, 'F');
+    // Accent overlay
+    doc.setFillColor(124, 111, 255);
+    doc.rect(0, 0, 70, 52, 'F');
+    // Bottom accent line
+    doc.setFillColor(255, 107, 157);
+    doc.rect(0, 52, W, 3, 'F');
 
-    // Purple accent bar
-    doc.setFillColor(108, 99, 255);
-    doc.rect(0, 56, W, 4, 'F');
-
-    // Company Name
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(26);
+    // Company name
+    doc.setFontSize(28);
     doc.setFont('helvetica', 'bold');
-    doc.text('DigiPratham', margin, 28);
+    doc.setTextColor(255, 255, 255);
+    doc.text('DigiPratham', margin, 26);
 
     // Tagline
-    doc.setFontSize(10);
+    doc.setFontSize(9.5);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(180, 175, 255);
-    doc.text('AI-First Digital Solutions', margin, 37);
+    doc.setTextColor(200, 190, 255);
+    doc.text('AI-First Digital Solutions', margin, 35);
+    doc.text('www.digipratham.in', margin, 43);
 
     // Right header info
-    doc.setFontSize(9);
-    doc.setTextColor(160, 160, 200);
-    const issuedStr = new Date(data.issuedAt).toLocaleDateString('en-IN', {
-        day: '2-digit', month: 'long', year: 'numeric',
-    });
-    doc.text(`Date: ${issuedStr}`, W - margin, 24, { align: 'right' });
-    doc.text(`Ref: DP-OL-${data.applicationId?.toString().slice(-6).toUpperCase()}`, W - margin, 31, { align: 'right' });
-    doc.text('www.digipratham.in', W - margin, 38, { align: 'right' });
+    doc.setFontSize(8.5);
+    doc.setTextColor(220, 215, 255);
+    const issuedStr = new Date(data.issuedAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+    doc.text(`Date: ${issuedStr}`, W - margin, 22, { align: 'right' });
+    doc.text(`Ref: DP-${data.applicationId?.toString().slice(-6).toUpperCase()}`, W - margin, 30, { align: 'right' });
+    doc.text('internships@digipratham.in', W - margin, 38, { align: 'right' });
 
-    // ── Offer Letter Title ─────────────────────────────────────────────────────
-    doc.setFillColor(245, 244, 255);
-    doc.rect(0, 60, W, 18, 'F');
-    doc.setFontSize(15);
+    // ── OFFER LETTER title banner ─────────────────────────────────────────────
+    doc.setFillColor(22, 18, 52);
+    doc.rect(0, 55, W, 20, 'F');
+    doc.setFontSize(13);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(108, 99, 255);
-    doc.text('INTERNSHIP OFFER LETTER', W / 2, 72, { align: 'center' });
+    doc.setTextColor(167, 139, 250);
+    doc.text('✦  INTERNSHIP OFFER LETTER  ✦', W / 2, 68, { align: 'center' });
 
-    // ── Body ───────────────────────────────────────────────────────────────────
-    let y = 92;
+    // ── Body ──────────────────────────────────────────────────────────────────
+    let y = 90;
 
     // Greeting
-    doc.setFontSize(11);
+    doc.setFontSize(11.5);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(30, 30, 50);
+    doc.setTextColor(220, 218, 255);
     doc.text(`Dear ${data.studentName},`, margin, y);
     y += 10;
 
-    // Opening paragraph
-    const opening = `We are pleased to offer you an internship position at DigiPratham. After reviewing your application and subsequent payment confirmation, we are delighted to welcome you to our team as an Intern for the ${data.internshipTitle} program.`;
+    const opening = `We are delighted to offer you an internship position at DigiPratham in the ${data.internshipTitle} program — domain: ${data.domain}. Upon reviewing your application and confirming your payment, we warmly welcome you to our team.`;
+    doc.setFontSize(10);
+    doc.setTextColor(160, 155, 210);
     const openLines = doc.splitTextToSize(opening, W - margin * 2);
     doc.text(openLines, margin, y);
-    y += openLines.length * 6 + 6;
+    y += openLines.length * 5.8 + 8;
 
-    // ── Details Box ───────────────────────────────────────────────────────────
-    doc.setFillColor(248, 247, 255);
-    doc.setDrawColor(200, 196, 255);
-    doc.roundedRect(margin, y, W - margin * 2, 56, 3, 3, 'FD');
-
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(108, 99, 255);
-    doc.text('INTERNSHIP DETAILS', margin + 8, y + 10);
-
+    // ── Details table ─────────────────────────────────────────────────────────
     const details = [
         ['Intern Name', data.studentName],
         ['Email', data.studentEmail],
+        ['Domain', data.domain],
         ['Program', data.internshipTitle],
         ['Duration', data.duration],
-        ['Amount Paid', `₹${data.amount}`],
-        ['Payment ID', data.paymentId],
+        ['Amount Paid', `\u20B9${data.amount}`],
+        ['Payment ID', data.paymentId || 'N/A'],
     ];
 
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(40, 40, 60);
-    let detailY = y + 17;
-    details.forEach(([label, value]) => {
+    const tableX = margin;
+    const tableW = W - margin * 2;
+    const rowH = 9;
+
+    // Table header
+    doc.setFillColor(62, 50, 168);
+    doc.roundedRect(tableX, y, tableW, rowH, 2, 2, 'F');
+    doc.setFontSize(8.5);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(255, 255, 255);
+    doc.text('INTERNSHIP DETAILS', tableX + tableW / 2, y + 6, { align: 'center' });
+    y += rowH;
+
+    details.forEach(([label, value], idx) => {
+        const even = idx % 2 === 0;
+        doc.setFillColor(even ? 20 : 28, even ? 16 : 22, even ? 52 : 65);
+        doc.rect(tableX, y, tableW, rowH, 'F');
+
         doc.setFont('helvetica', 'bold');
-        doc.setTextColor(80, 80, 110);
-        doc.text(`${label}:`, margin + 8, detailY);
+        doc.setFontSize(8.5);
+        doc.setTextColor(167, 139, 250);
+        doc.text(`${label}:`, tableX + 5, y + 6);
+
         doc.setFont('helvetica', 'normal');
-        doc.setTextColor(30, 30, 50);
-        doc.text(String(value), margin + 55, detailY);
-        detailY += 7;
+        doc.setTextColor(220, 218, 255);
+        doc.text(String(value), tableX + 60, y + 6);
+        y += rowH;
     });
 
-    y += 64;
+    // Table bottom border
+    doc.setFillColor(124, 111, 255);
+    doc.rect(tableX, y, tableW, 1.5, 'F');
+    y += 12;
 
-    // ── Terms Section ─────────────────────────────────────────────────────────
+    // ── Terms ─────────────────────────────────────────────────────────────────
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(108, 99, 255);
+    doc.setTextColor(167, 139, 250);
     doc.text('TERMS & CONDITIONS', margin, y);
     y += 7;
 
-    const terms = [
-        '• You are expected to dedicate time as per the program schedule and complete assigned tasks.',
-        '• Upon successful completion, you will receive the ' + data.certification + '.',
-        '• Integrity and professionalism are expected throughout the internship period.',
-        '• Any work produced during the internship remains the intellectual property of DigiPratham.',
-    ];
+    // Divider
+    doc.setFillColor(62, 50, 168);
+    doc.rect(margin, y, 80, 0.8, 'F');
+    y += 5;
 
+    const terms = [
+        '•  Dedicate time as per the program schedule and complete all assigned tasks diligently.',
+        `•  Upon successful completion, you will receive the ${data.certification}.`,
+        '•  Maintain integrity and professionalism throughout the internship.',
+        '•  Work produced remains intellectual property of DigiPratham Pvt. Ltd.',
+    ];
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(60, 60, 80);
-    doc.setFontSize(9.5);
+    doc.setFontSize(9);
+    doc.setTextColor(140, 135, 195);
     terms.forEach(term => {
         const lines = doc.splitTextToSize(term, W - margin * 2);
         doc.text(lines, margin, y);
-        y += lines.length * 5.5 + 1;
+        y += lines.length * 5 + 2;
     });
 
     y += 8;
 
-    // ── Closing ───────────────────────────────────────────────────────────────
-    doc.setFontSize(10.5);
+    // ── Closing paragraph ─────────────────────────────────────────────────────
+    doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(30, 30, 50);
-    const closing = 'We look forward to a productive and rewarding internship experience. Please feel free to reach out to us at any time if you have questions or need assistance.';
+    doc.setTextColor(160, 155, 210);
+    const closing = 'We look forward to a productive internship experience. Reach out at any time for assistance or guidance — our team is always happy to help.';
     const closingLines = doc.splitTextToSize(closing, W - margin * 2);
     doc.text(closingLines, margin, y);
-    y += closingLines.length * 6 + 10;
+    y += closingLines.length * 5.5 + 10;
 
+    // Regards
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(140, 135, 195);
     doc.text('Warm regards,', margin, y);
     y += 7;
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.setTextColor(108, 99, 255);
+    doc.setFontSize(12);
+    doc.setTextColor(167, 139, 250);
     doc.text('DigiPratham Team', margin, y);
     y += 5;
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
-    doc.setTextColor(100, 100, 130);
+    doc.setFontSize(8.5);
+    doc.setTextColor(110, 108, 160);
     doc.text('internships@digipratham.in  |  www.digipratham.in', margin, y);
 
-    // ── Signature box ─────────────────────────────────────────────────────────
-    const sigBoxX = W - margin - 60;
-    doc.setDrawColor(200, 196, 255);
-    doc.setFillColor(248, 247, 255);
-    doc.roundedRect(sigBoxX, y - 20, 60, 22, 2, 2, 'FD');
-    doc.setFontSize(8);
-    doc.setTextColor(108, 99, 255);
+    // ── Signature block (right side) ──────────────────────────────────────────
+    const sigY = y - 17;
+    const sigX = W - margin - 62;
+    doc.setFillColor(22, 18, 52);
+    doc.setDrawColor(124, 111, 255);
+    doc.roundedRect(sigX, sigY, 62, 26, 3, 3, 'FD');
+    // Seal circle
+    doc.setFillColor(62, 50, 168);
+    doc.circle(sigX + 31, sigY + 9, 6, 'F');
+    doc.setFontSize(7);
     doc.setFont('helvetica', 'bold');
-    doc.text('Authorised Signatory', sigBoxX + 30, y - 14, { align: 'center' });
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(100, 100, 130);
-    doc.text('DigiPratham Pvt. Ltd.', sigBoxX + 30, y - 7, { align: 'center' });
+    doc.setTextColor(255, 255, 255);
+    doc.text('DP', sigX + 31, sigY + 11, { align: 'center' });
+    doc.setFontSize(7.5);
+    doc.setTextColor(167, 139, 250);
+    doc.text('Authorised Signatory', sigX + 31, sigY + 19, { align: 'center' });
+    doc.setTextColor(110, 108, 160);
+    doc.text('DigiPratham Pvt. Ltd.', sigX + 31, sigY + 24, { align: 'center' });
 
-    // ── Footer bar ────────────────────────────────────────────────────────────
-    doc.setFillColor(15, 12, 41);
-    doc.rect(0, 280, W, 17, 'F');
-    doc.setFillColor(108, 99, 255);
+    // ── Certificate badge ─────────────────────────────────────────────────────
+    const certY = y + 10;
+    doc.setFillColor(16, 14, 42);
+    doc.setDrawColor(255, 185, 0);
+    doc.roundedRect(margin, certY, W - margin * 2, 18, 3, 3, 'FD');
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(255, 200, 50);
+    doc.text(`🏆  ${data.certification}`, W / 2, certY + 11, { align: 'center' });
+
+    // ── Footer ────────────────────────────────────────────────────────────────
+    doc.setFillColor(62, 50, 168);
     doc.rect(0, 278, W, 2, 'F');
-    doc.setFontSize(8);
+    doc.setFillColor(10, 9, 26);
+    doc.rect(0, 280, W, 17, 'F');
+    doc.setFontSize(7.5);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(160, 160, 200);
-    doc.text(
-        'This is a digitally generated offer letter. For queries: internships@digipratham.in',
-        W / 2, 288, { align: 'center' }
-    );
-    doc.text('© 2025 DigiPratham. All rights reserved.', W / 2, 293, { align: 'center' });
+    doc.setTextColor(110, 108, 160);
+    doc.text('This is a digitally generated offer letter. For queries: internships@digipratham.in', W / 2, 287, { align: 'center' });
+    doc.text('© 2025 DigiPratham Pvt. Ltd. All rights reserved.', W / 2, 293, { align: 'center' });
 
     doc.save(`DigiPratham_Offer_Letter_${data.studentName.replace(/\s+/g, '_')}.pdf`);
 }

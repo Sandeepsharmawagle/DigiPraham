@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema(
         password: { type: String, required: true, select: false },
         isAdmin: { type: Boolean, default: false },
         isVerified: { type: Boolean, default: false },
+        isTestUser: { type: Boolean, default: false }, // ← ₹2 pricing for real Razorpay testing
 
         // Email verification
         emailVerifyToken: { type: String, select: false },
