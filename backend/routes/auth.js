@@ -39,7 +39,7 @@ router.post('/register', async (req, res) => {
     const jwtToken = signToken(user._id);
     res.status(201).json({
         token: jwtToken,
-        user: { id: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin, selectedServices: user.selectedServices },
+        user: { id: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin, isTestUser: !!user.isTestUser, selectedServices: user.selectedServices },
     });
 });
 
@@ -56,7 +56,7 @@ router.post('/login', async (req, res) => {
     const token = signToken(user._id);
     res.json({
         token,
-        user: { id: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin, selectedServices: user.selectedServices },
+        user: { id: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin, isTestUser: !!user.isTestUser, selectedServices: user.selectedServices },
     });
 });
 
@@ -67,6 +67,7 @@ router.get('/me', protect, async (req, res) => {
         name: req.user.name,
         email: req.user.email,
         isAdmin: req.user.isAdmin,
+        isTestUser: !!req.user.isTestUser,
         isVerified: req.user.isVerified,
         selectedServices: req.user.selectedServices,
         createdAt: req.user.createdAt,

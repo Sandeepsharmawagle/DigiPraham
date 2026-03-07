@@ -48,6 +48,7 @@ const DURATIONS = [
         id: '1m',
         title: '1 Month',
         price: 499,
+        testPrice: 2,
         badge: '🔥 Popular',
         badgeColor: '#7C6FFF',
         features: ['Real project work', 'Expert mentorship', 'Weekly code reviews', 'DigiPratham Certificate'],
@@ -57,6 +58,7 @@ const DURATIONS = [
         id: '2m',
         title: '2 Months',
         price: 599,
+        testPrice: 2,
         badge: '⭐ Best Value',
         badgeColor: '#FF6B9D',
         features: ['Everything in 1 Month', 'Capstone project', 'Portfolio review', 'LinkedIn recommendation', 'Certificate of Excellence'],
@@ -214,8 +216,21 @@ export default function CareersPage() {
     const [selectedDuration, setSelectedDuration] = useState(null);
     const [internships, setInternships] = useState([]);
     const [processing, setProcessing] = useState(false);
+    const [isTestUser, setIsTestUser] = useState(false);
+
+    // Helper: returns ₹2 for test user, normal price otherwise
+    const getPrice = (dur) => isTestUser ? (dur.testPrice ?? 2) : dur.price;
 
     useEffect(() => {
+        // Detect test user from localStorage
+        try {
+            const stored = localStorage.getItem('dp_user');
+            if (stored) {
+                const u = JSON.parse(stored);
+                setIsTestUser(!!u.isTestUser);
+            }
+        } catch { }
+
         (async () => {
             try {
                 const { getInternships } = await import('../lib/api');
@@ -541,7 +556,7 @@ export default function CareersPage() {
                                         <span style={{ color: '#E8E9FF', fontWeight: 700, fontSize: '1rem' }}>Total Amount</span>
                                         <div style={{ textAlign: 'right' }}>
                                             <div style={{ fontSize: '2rem', fontWeight: 800, color: '#43E97B', fontFamily: 'Space Grotesk', letterSpacing: '-0.03em' }}>
-                                                ₹{selectedDuration.price}
+                                                ₹{getPrice(selectedDuration)}
                                             </div>
                                             <div style={{ fontSize: '0.72rem', color: '#9495B8' }}>one-time · no hidden charges</div>
                                         </div>
@@ -584,7 +599,7 @@ export default function CareersPage() {
                                         ) : (
                                             <>
                                                 <SiRazorpay size={20} />
-                                                Pay ₹{selectedDuration.price} with Razorpay
+                                                Pay ₹{getPrice(selectedDuration)} with Razorpay
                                             </>
                                         )}
                                     </button>

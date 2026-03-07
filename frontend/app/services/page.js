@@ -236,7 +236,6 @@ function ServiceCard({ svc, index }) {
                     transition: 'all 0.4s cubic-bezier(0.4,0,0.2,1)',
                     transform: hovered ? 'translateY(-8px)' : 'none',
                     boxShadow: hovered ? `0 28px 72px ${svc.color}25` : 'none',
-                    opacity: 0,
                     cursor: 'pointer',
                 }}
             >
@@ -493,7 +492,7 @@ export default function ServicesPage() {
                                     borderRadius: 20,
                                     padding: '2rem',
                                     textAlign: 'center',
-                                    opacity: 0,
+                                    opacity: 1,  // GSAP controls this via fromTo, do not set 0 here
                                     transition: 'transform 0.3s, box-shadow 0.3s, border-color 0.3s',
                                 }}
                                     onMouseEnter={e => {
