@@ -222,14 +222,36 @@ export default function CareersPage() {
     const getPrice = (dur) => isTestUser ? (dur.testPrice ?? 2) : dur.price;
 
     useEffect(() => {
-        // Detect test user from localStorage
-        try {
-            const stored = localStorage.getItem('dp_user');
-            if (stored) {
-                const u = JSON.parse(stored);
-                setIsTestUser(!!u.isTestUser);
+        // Fetch isTestUser server-side for accuracy (localStorage may be stale)
+        (async () => {
+            try {
+                const token = localStorage.getItem('dp_token');
+                if (token) {
+                    const { getUserPaymentInfo } = await import('../lib/api');
+                    const { data } = await getUserPaymentInfo();
+                    setIsTestUser(!!data.isTestUser);
+                    // Also update localStorage so next page load is instant
+                    try {
+                        const stored = localStorage.getItem('dp_user');
+                        if (stored) {
+                            const u = JSON.parse(stored);
+                            u.isTestUser = !!data.isTestUser;
+                            localStorage.setItem('dp_user', JSON.stringify(u));
+                        }
+                    } catch { }
+                } else {
+                    // Fallback: use localStorage
+                    const stored = localStorage.getItem('dp_user');
+                    if (stored) setIsTestUser(!!(JSON.parse(stored).isTestUser));
+                }
+            } catch {
+                // Fallback: use localStorage
+                try {
+                    const stored = localStorage.getItem('dp_user');
+                    if (stored) setIsTestUser(!!(JSON.parse(stored).isTestUser));
+                } catch { }
             }
-        } catch { }
+        })();
 
         (async () => {
             try {

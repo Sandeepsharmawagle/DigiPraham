@@ -37,6 +37,7 @@ export const createOrder = (data) => api.post('/api/payments/create-order', data
 export const verifyPayment = (data) => api.post('/api/payments/verify', data);
 export const getMyPayments = () => api.get('/api/payments/my');
 export const getOfferLetterData = (applicationId) => api.get(`/api/payments/offer-letter/${applicationId}`);
+export const getUserPaymentInfo = () => api.get('/api/payments/user-info'); // server-side isTestUser
 
 
 // Chat

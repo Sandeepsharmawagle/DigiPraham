@@ -1,6 +1,5 @@
 const express = require('express');
 const crypto = require('crypto');
-const Razorpay = require('razorpay');
 const Internship = require('../models/Internship');
 const Payment = require('../models/Payment');
 const Application = require('../models/Application');
@@ -9,10 +8,18 @@ const { protect } = require('../middleware/auth');
 
 const router = express.Router();
 
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+// Lazy-initialize Razorpay per-request so that env vars set in Render dashboard
+// take effect immediately after a redeploy without needing a code push.
+function getRazorpay() {
+    const Razorpay = require('razorpay');
+    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+        throw new Error('Razorpay keys not configured. Please set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in Render environment variables.');
+    }
+    return new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID,
+        key_secret: process.env.RAZORPAY_KEY_SECRET,
+    });
+}
 
 // POST /api/payments/create-order
 router.post('/create-order', protect, async (req, res) => {
@@ -21,20 +28,29 @@ router.post('/create-order', protect, async (req, res) => {
         const internship = await Internship.findById(internshipId);
         if (!internship) return res.status(404).json({ error: 'Internship not found' });
 
-        // Test user gets ₹2 (200 paise) for real Razorpay testing
+        // Fresh DB fetch to get the latest isTestUser flag
         const user = await User.findById(req.user._id);
-        const chargeAmount = user?.isTestUser ? 2 : internship.price;
+        const isTestUser = !!(user?.isTestUser);
+
+        // Test user gets ₹2 (200 paise) for real Razorpay testing
+        const chargeAmount = isTestUser ? 2 : internship.price;
+
+        const razorpay = getRazorpay();
 
         const options = {
             amount: chargeAmount * 100, // paise
             currency: 'INR',
-            receipt: `order_${req.user._id}_${Date.now()}`,
-            notes: { internshipId: internshipId.toString(), userId: req.user._id.toString() },
+            receipt: `rcpt_${req.user._id.toString().slice(-6)}_${Date.now()}`,
+            notes: {
+                internshipId: internshipId.toString(),
+                userId: req.user._id.toString(),
+                isTestUser: String(isTestUser),
+            },
         };
 
         const order = await razorpay.orders.create(options);
 
-        // Save pending payment
+        // Save pending payment record
         const payment = await Payment.create({
             userId: req.user._id,
             internshipId: internship._id,
@@ -51,11 +67,15 @@ router.post('/create-order', protect, async (req, res) => {
             currency: 'INR',
             keyId: process.env.RAZORPAY_KEY_ID,
             paymentDbId: payment._id,
-            isTestUser: !!user?.isTestUser,
+            isTestUser,
+            displayAmount: chargeAmount, // frontend uses this to show correct price
         });
     } catch (err) {
         console.error('[Payments] create-order error:', err.message);
-        res.status(500).json({ error: 'Could not create payment order. Please try again.' });
+        const msg = err.message.includes('Razorpay keys not configured')
+            ? err.message
+            : 'Could not create payment order. Please try again.';
+        res.status(500).json({ error: msg });
     }
 });
 
@@ -108,6 +128,17 @@ router.get('/my', protect, async (req, res) => {
         .populate('internshipId', 'title duration')
         .sort('-createdAt');
     res.json(payments);
+});
+
+// GET /api/payments/user-info  — used by frontend to get server-side isTestUser
+// (avoids depending on stale localStorage data)
+router.get('/user-info', protect, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id).select('isTestUser');
+        res.json({ isTestUser: !!(user?.isTestUser) });
+    } catch (err) {
+        res.status(500).json({ isTestUser: false });
+    }
 });
 
 // GET /api/payments/offer-letter/:applicationId
