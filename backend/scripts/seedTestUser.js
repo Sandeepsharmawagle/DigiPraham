@@ -20,11 +20,12 @@ async function seed() {
 
     const existing = await User.findOne({ email: TEST_USER.email });
     if (existing) {
-        // Update to ensure isTestUser flag is set
+        // Reset password + flags so login works correctly
         existing.isTestUser = true;
         existing.isVerified = true;
-        await existing.save({ validateBeforeSave: false });
-        console.log(`✅ User already exists – updated isTestUser=true for: ${TEST_USER.email}`);
+        existing.password = TEST_USER.password;   // triggers bcrypt pre-save hook
+        await existing.save();                     // no validateBeforeSave:false — hook must run
+        console.log(`✅ User updated: isTestUser=true, password reset for: ${TEST_USER.email}`);
         await mongoose.disconnect();
         return;
     }
